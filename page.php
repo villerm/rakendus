@@ -12,6 +12,18 @@
     else:
         $partOfDay = "puhka nüüd!";
     endif;
+
+    //info semestri kulgemise kohta
+    $semesterStart = new DateTime("2020-1-27");
+    $semesterEnd = new DateTime("2020-6-22");
+    $semesterDuration = $semesterStart->diff($semesterEnd);
+    $today = new DateTime("now"); 
+    $fromSemesterStart = $semesterStart->diff($today);
+
+    //pildid
+    $imgDir = "../images/";
+    $allFiles = array_slice(scandir($imgDir), 2);
+    print_r($allFiles);
 ?>
 <html lang="et">
 <head>
@@ -24,5 +36,12 @@
     <h1><?php echo $myName;?></h1>
     <?php echo $timeHTML; ?>
     <?php echo $partOfDay; ?>
+    <?php if($fromSemesterStart->days < $semesterDuration->days):?>
+        <p>Semester on hoos:</p>
+        <progress value="<?php echo $fromSemesterStart->days; ?>" min="0" max="<?php echo $semesterDuration->days; ?>" style="height:34px;width:200px;">>
+        </progress>
+    <?php else:?>
+        <p>Semester on läbi!</p>
+    <?php endif;?>
 </body>
 </html>
