@@ -22,8 +22,20 @@
 
     //pildid
     $imgDir = "../images/";
+    $imgTypesAllowed = ["image/jpeg", "image/png"];
+    $imgList = [];
     $allFiles = array_slice(scandir($imgDir), 2);
-    print_r($allFiles);
+    //print_r($allFiles);
+    foreach($allFiles as $file){
+        $fileInfo = getimagesize($imgDir .$file);
+        if(in_array($fileInfo["mime"], $imgTypesAllowed)){
+            array_push($imgList, $file);
+        }
+    }
+    $imgCount = count($imgList);
+    if($imgCount > 0):
+        $imgNum = mt_rand( 0, $imgCount-1 );
+    endif;
 ?>
 <html lang="et">
 <head>
@@ -43,5 +55,9 @@
     <?php else:?>
         <p>Semester on läbi!</p>
     <?php endif;?>
+    <div>
+        <h3>Üks suvaline pilt ka siia</h3>
+        <img src="<?php echo $imgDir.$imgList[$imgNum];?>" alt="pilt" style="max-width:500px;height:auto;"></img>
+    </div>
 </body>
 </html>
