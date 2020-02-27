@@ -1,8 +1,10 @@
 <?php
 require('../../../../config.php');
+require('functions.php');
 $newsTitle = null;
 $newsContent = null;
 $newsError = null;
+$database = 'villermaine';
 if (isset($_POST['newsSubmit'])) :
     if (isset($_POST['newsTitle']) && !empty(test_input($_POST['newsTitle']))) :
         $newsTitle = test_input($_POST['newsTitle']);
@@ -17,15 +19,23 @@ if (isset($_POST['newsSubmit'])) :
 endif;
 
 //puhastamise funktsioon
-function test_input($data){
+function test_input($data)
+{
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
     return $data;
 }
 
-if(empty($newsError)){
-    echo 'Korras!';
+if (empty($newsError) && isset($newsTitle) && isset($newsContent)) {
+    $response = saveNews(1, $newsTitle, $newsContent);
+    if ($response == 1) {
+        $newsError = 'Uudis on salvestatud!';
+        $newsTitle = null;
+        $newsContent = null;
+    } else {
+        $newsError = $response;
+    }
 }
 
 ?>
@@ -64,9 +74,9 @@ if(empty($newsError)){
     <div class="container">
         <form class="newsForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
             <label for="newsTitle">Pealkiri</label>
-            <input type="text" name="newsTitle" placeholder="Uudise pealkiri" value="<?php echo $newsTitle; ?>">
+            <input type="text" name="newsTitle" placeholder="Uudise pealkiri" value="<?php if(isset($newsTitle)){echo $newsTitle; };?>">
             <label for="newsContent">Uudise sisu</label>
-            <textarea name="newsContent" id="newsContent" cols="30" rows="10" placeholder="Sisestage uudis"><?php echo $newsContent; ?></textarea>
+            <textarea name="newsContent" id="newsContent" cols="30" rows="10" placeholder="Sisestage uudis"><?php if(isset($newsContent)){echo $newsContent;}; ?></textarea>
             <input type="submit" class="btn btn--submit" value="Salvesta" name="newsSubmit">
             <span><?php if (isset($newsError)) {
                         echo $newsError;
