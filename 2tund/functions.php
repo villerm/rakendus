@@ -22,3 +22,24 @@ function saveNews($userid, $title, $content)
     $conn->close();
     return $response;
 }
+function readNews(){
+    $database = 'villermaine';
+    $response = null;
+    $conn = new mysqli($GLOBALS['serverHost'], $GLOBALS['serverUserName'], $GLOBALS['serverPassword'], $database);
+    //sql paring
+    $stmt = $conn->prepare('SELECT title, content FROM vr_news');
+    echo $conn->error;
+    $stmt->bind_result($title, $content);
+    $stmt->execute();
+    while($stmt->fetch()){
+        $response .= '<div class="news"><h2>'.$title.'</h2>';
+        $response .= '<p>'.$content.'</p></div>';
+    }
+    if($response == null){
+        $response = '<h2>Uudiseid pole!</h2>';
+    }
+    //sulgen paringu ja andmebaasi yhenduse
+    $stmt->close();
+    $conn->close();
+    return $response;
+}

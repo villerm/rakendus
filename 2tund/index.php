@@ -70,6 +70,7 @@ if (empty($newsError) && isset($newsTitle) && isset($newsContent)) {
     <div class="container">
         <h1>Uudise lisamine</h1>
         <p>See leht on valminud õppetöö raames!</p>
+        <a href='news.php'>Loe uudiseid</a>
     </div>
     <div class="container">
         <form class="newsForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
