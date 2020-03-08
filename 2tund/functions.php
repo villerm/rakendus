@@ -57,3 +57,60 @@ function readNews($count){
     $conn->close();
     return $response;
 }
+function saveActivity($course, $elapsedTime, $content){
+    $conn = new mysqli($GLOBALS['serverHost'], $GLOBALS['serverUserName'], $GLOBALS['serverPassword'], $GLOBALS['database']);
+    //sql paring
+    $stmt = $conn->prepare('INSERT INTO vr20_studylog (course, activity, time) VALUES (?, ?, ?)');
+    echo $conn->error;
+    $stmt->bind_param('isd', $course, $content, $elapsedTime);
+    if ($stmt->execute()) {
+        $response = 1;
+    } else {
+        $response = 0;
+        echo $stmt->error;
+    }
+    //sulgen paringu ja andmebaasi yhenduse
+    $stmt->close();
+    $conn->close();
+    return $response;
+}
+function readActivity(){
+    $courseNames = array(
+        'Disaini alused',
+        'Sissejuhatus tarkvaraarendusse',
+        'Sissejuhatus informaatikasse',
+        'Andmebaasid',
+        'Videomängude disain',
+        'Üld- ja sotsiaalpsühholoogia'
+    );
+    $activityName = array(
+        'Iseseisev materjali omandamine',
+        'Koduste ülesannete lahendamine',
+        'Kordamine',
+        'Rühmatööd'
+    );
+    $response = NULL;
+    $conn = new mysqli($GLOBALS['serverHost'], $GLOBALS['serverUserName'], $GLOBALS['serverPassword'], $GLOBALS['database']);
+    //sql paring
+    $stmt = $conn->prepare('SELECT course, activity, time, day FROM vr20_studylog ORDER BY day DESC');
+    echo $conn->error;
+    $stmt->bind_result($course, $activity, $time, $day);
+    $stmt->execute();
+    while($stmt->fetch()){
+        $response .= '<tr>';
+        $course = $course-1;
+        $activity = $activity-1;
+        $response .= '<td>'.$courseNames[$course].'</td>';
+        $response .= '<td>'.$activityName[$activity].'</td>';
+        $response .= '<td>'.$time.'</td>';
+        $response .= '<td>'.date('d.M Y H:i',strtotime($day)).'</td>';
+        $response .= '</tr>';
+    }
+    if($response == null){
+        $response = '<td><h2>Logid puuduvad!</h2></td>';
+    }
+    //sulgen paringu ja andmebaasi yhenduse
+    $stmt->close();
+    $conn->close();
+    return $response;
+}
