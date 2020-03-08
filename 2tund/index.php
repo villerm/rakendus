@@ -18,15 +18,6 @@ if (isset($_POST['newsSubmit'])) :
     endif;
 endif;
 
-//puhastamise funktsioon
-function test_input($data)
-{
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
-
 if (empty($newsError) && isset($newsTitle) && isset($newsContent)) {
     $response = saveNews(1, $newsTitle, $newsContent);
     if ($response == 1) {
@@ -37,51 +28,34 @@ if (empty($newsError) && isset($newsTitle) && isset($newsContent)) {
         $newsError = $response;
     }
 }
-
+require('header.php');
 ?>
-<html lang="et">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Veebirakendused ja nende loomine</title>
-</head>
-
-<style>
-    .container {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 15px;
-        margin: 20px 0;
-    }
-
-    .newsForm label,
-    textarea,
-    input {
-        display: block;
-    }
-
-    .newsform label {
-        margin-top: 20px;
-    }
-</style>
 
 <body>
     <div class="container">
         <h1>Uudise lisamine</h1>
         <p>See leht on valminud õppetöö raames!</p>
-        <a href='news.php'>Loe uudiseid</a>
+        <a href='news.php'>Uudised</a>
+        <a href='activity.php'>Logi</a>
     </div>
     <div class="container">
         <form class="newsForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-            <label for="newsTitle">Pealkiri</label>
-            <input type="text" name="newsTitle" placeholder="Uudise pealkiri" value="<?php if(isset($newsTitle)){echo $newsTitle; };?>">
-            <label for="newsContent">Uudise sisu</label>
-            <textarea name="newsContent" id="newsContent" cols="30" rows="10" placeholder="Sisestage uudis"><?php if(isset($newsContent)){echo $newsContent;}; ?></textarea>
-            <input type="submit" class="btn btn--submit" value="Salvesta" name="newsSubmit">
-            <span><?php if (isset($newsError)) {
-                        echo $newsError;
-                    }; ?></span>
+            <div class="form-group">
+                <label for="newsTitle">Pealkiri</label>
+                <input type="text" class="form-control" name="newsTitle" placeholder="Sisesta pealkiri" value="<?php if(isset($newsTitle)){echo $newsTitle; };?>">
+            </div>
+            <div class="form-group">
+                <label for="newsContent">Sisu</label>
+                <textarea class="form-control" id="newsContent" name="newsContent" rows="5" placeholder="Sisesta uudis"><?php if(isset($newsContent)){echo $newsContent;}; ?></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" name="newsSubmit">Salvesta</button>
+            <?php if (isset($newsError)) {
+                    $alertType = 'danger';
+                    if($newsError == 'Uudis on salvestatud!'){
+                        $alertType = 'success';
+                    }
+                        echo '<div class="alert alert-'.$alertType.'" role="alert">'.$newsError.'</div>';
+                    }; ?>
         </form>
     </div>
 
