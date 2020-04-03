@@ -1,5 +1,4 @@
 <?php
-require('../../../../config.php');
 require('header.php');
 
 if (isset($_POST['newsRead'])) :
@@ -16,8 +15,8 @@ endif;
 
 <body>
     <div class="container">
+        <a href='.'>Tagasi</a>
         <h1>Uudised</h1>
-        <a href='.'>Lisa uudis</a>
         <h5>Mitu uudist soovid kuvada?</h5>
         <form class="form-inline" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
             <div class="form-group mx-sm-3">

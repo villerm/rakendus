@@ -1,4 +1,6 @@
 <?php 
+    require('../../../config.php');
+    require('header.php');
     $myName = "Viller Maine";
     $fullTimeNow = date("d.m.Y H:i:s");
     $hourNow = date("H");
@@ -68,6 +70,7 @@
     </style>
 </head>
 <body>
+    <div class="container">
     <h1><?php echo $myName;?></h1>
     <?php echo $timeHTML; ?>
     <?php echo $partOfDay; ?>
@@ -88,6 +91,29 @@
             echo '<img src="'.$imgDir.$imgList[$i].'" alt="pilt" style="max-width:250px;height:auto;"></img>';
         };
         ?>
+    </div>
+    </div>
+    <hr>
+    <div class="container">
+        <h2>Uudised</h2>
+        <div class="row">
+            <?php echo readnews(6);?>
+        </div>
+    </div>
+    <hr>
+    <div class="container">
+    <h2>Logid</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">Aine nimetus</th>
+                <th scope="col">Kirjeldus</th>
+                <th scope="col">Kulunud aeg</th>
+                <th scope="col">Lisatud</th>
+                </tr>
+            </thead>
+            <?php echo readActivity();?>
+        </table>
     </div>
 </body>
 </html>

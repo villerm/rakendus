@@ -1,5 +1,4 @@
 <?php
-require('../../../../config.php');
 require('header.php');
 $database = 'villermaine';
 
@@ -34,7 +33,7 @@ if (empty($activityError) && isset($courseName) && isset($content)) {
 ?>
 <body>
     <div class="container">
-        <a href='.'>Tagasi uudiste juurde</a>
+        <a href='.'>Tagasi</a>
         <h2>Sisesta uus logi</h2>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
         <div class="form-group row">

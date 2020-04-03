@@ -1,33 +1,5 @@
 <?php
 require('header.php');
-$newsTitle = null;
-$newsContent = null;
-$newsError = null;
-$database = 'villermaine';
-if (isset($_POST['newsSubmit'])) :
-    if (isset($_POST['newsTitle']) && !empty(test_input($_POST['newsTitle']))) :
-        $newsTitle = test_input($_POST['newsTitle']);
-    else :
-        $newsError = "Uudise pealkiri on tühi! ";
-    endif;
-    if (isset($_POST['newsContent']) && !empty(test_input($_POST['newsContent']))) :
-        $newsContent = test_input($_POST['newsContent']);
-    else :
-        $newsError .= "Uudise sisu on tühi!";
-    endif;
-endif;
-
-if (empty($newsError) && isset($newsTitle) && isset($newsContent)) {
-    $response = saveNews(1, $newsTitle, $newsContent);
-    if ($response == 1) {
-        $newsError = 'Uudis on salvestatud!';
-        $newsTitle = null;
-        $newsContent = null;
-    } else {
-        $newsError = $response;
-    }
-}
-
 ?>
 
 <body>
@@ -35,7 +7,8 @@ if (empty($newsError) && isset($newsTitle) && isset($newsContent)) {
         <h1>Uudise lisamine</h1>
         <p>See leht on valminud õppetöö raames!</p>
         <a href='news.php'>Uudised</a>
-        <a href='activity.php'>Logi</a>
+        <a href='activity.php'>Logid</a>
+        <a href='newuser.php'>Registreeri konto</a>
     </div>
     <div class="container">
         <form class="newsForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
