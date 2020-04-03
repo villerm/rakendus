@@ -1,14 +1,12 @@
 <?php
 require('header.php');
 ?>
-
 <body>
+    <?php if(isset($_SESSION["userid"])):?>
     <div class="container">
         <h1>Uudise lisamine</h1>
         <p>See leht on valminud õppetöö raames!</p>
         <a href='news.php'>Uudised</a>
-        <a href='activity.php'>Logid</a>
-        <a href='newuser.php'>Registreeri konto</a>
     </div>
     <div class="container">
         <form class="newsForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
@@ -30,7 +28,16 @@ require('header.php');
                     }; ?>
         </form>
     </div>
-
+    <?php endif;?>
+        <div class="container">
+            <a href='activity.php'>Logid</a>
+            <h1>Uudised</h1>
+            <h5>Uudiste lisamiseks pead sisse logima!</h5>
+            <div class="row">
+                <?php echo readnews(6);?>
+            </div>
+        </div>
+    
 </body>
 
 </html>

@@ -22,7 +22,8 @@ if(isset($_POST["login"])){
   } else {
     $notice = "Ei saa sisse logida!";
   }
-  }
+}
+  
 ?>
 <html lang="et">
 
@@ -46,8 +47,14 @@ if(isset($_POST["login"])){
       <li class="nav-item">
         <a class="nav-link" href="./2tund">2tund</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="./3tund">3tund</a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="./3tund" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        3tund
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="./3tund">Uudised</a>
+          <a class="dropdown-item" href="./3tund/activity.php">Logid</a>
+        </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="./4tund">4tund</a>
@@ -55,7 +62,7 @@ if(isset($_POST["login"])){
     </ul>
   </div>
   <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalLRForm">Kasutaja
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="<?php if(isset($_SESSION["userid"])){echo '#modalUserInfo'; }else{?>#modalLRForm<?php };?>"><?php if(isset($_SESSION["userid"])){ echo $_SESSION["userFirstName"].' '.$_SESSION["userLastName"]; } else{?>Logi sisse<?php };?>
 </button>
 </nav>
 </div>
@@ -78,7 +85,6 @@ if(isset($_POST["login"])){
           <input name="password" type="password"><span><?php echo $passwordError; ?></span><br>
           <input class="btn btn-primary" name="login" type="submit" value="Logi sisse!"><span><?php echo $notice; ?></span>
         </form>
-        <p>Logi <a href="?logout=1">välja</a>!</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Sulge</button>
@@ -130,8 +136,162 @@ if(isset($_POST["login"])){
             <!--Footer-->
             <div class="modal-footer">
               <div class="options text-center text-md-right mt-1">
-                <p>Pole kontot? <a href="#" class="blue-text">Registreeru</a></p>
-                <p>Unustasid <a href="#" class="blue-text">parooli?</a></p>
+               
+              </div>
+              <button type="button" class="btn btn-secondary waves-effect ml-auto" data-dismiss="modal">Sulge</button>
+            </div>
+
+          </div>
+          <!--/.Panel 7-->
+
+          <!--Panel 8-->
+          <div class="tab-pane fade" id="panel8" role="tabpanel">
+
+            <!--Body-->
+            <div class="modal-body">
+            <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+			    			<div class="row">
+			    				<div class="col-xs-6 col-sm-6 col-md-6">
+			    					<div class="form-group">
+                                        <input type="text" name="firstName" id="firstName" class="form-control input-sm" placeholder="Eesnimi" value="<?php echo $name; ?>">
+                                        <span class="text-danger"><?php echo $nameError; ?></span>
+			    					</div>
+                                </div>
+			    				<div class="col-xs-6 col-sm-6 col-md-6">
+			    					<div class="form-group">
+                                        <input type="text" name="surName" id="surName" class="form-control input-sm" placeholder="Perekonnanimi" value="<?php echo $surname; ?>">
+                                        <span class="text-danger"><?php echo $surnameError; ?></span>
+			    					</div>
+			    				</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 mb-2">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="gender2" value="2" <?php if($gender == "2"){		echo " checked";} ?>>
+                                        <label class="form-check-label" for="gender2">Naine</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="gender1" value="1" <?php if($gender == "1"){		echo " checked";} ?>>
+                                        <label class="form-check-label" for="gender1">Mees</label>
+                                    </div>
+                                        <span class="text-danger"><?php echo $genderError; ?></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-4 col-sm-4 col-md-4 mb-2">
+                                <?php
+                                    //sünnikuupäev
+                                    echo '<select class="custom-select mr-sm-2" name="birthDay">' ."\n";
+                                    echo "\t \t" .'<option value="" selected disabled>päev</option>' ."\n";
+                                    for($i = 1; $i < 32; $i ++){
+                                        echo "\t \t" .'<option value="' .$i .'"';
+                                        if($i == $birthDay){
+                                            echo " selected";
+                                        }
+                                        echo ">" .$i ."</option> \n";
+                                    }
+                                    echo "\t </select> \n";
+                                ?>
+                                <span class="text-danger"><?php echo $birthDayError; ?></span>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4 mb-2">
+                                <?php
+                                    echo '<select class="custom-select mr-sm-2" name="birthMonth">' ."\n";
+                                    echo "\t \t" .'<option value="" selected disabled>kuu</option>' ."\n";
+                                    for ($i = 1; $i < 13; $i ++){
+                                        echo "\t \t" .'<option value="' .$i .'"';
+                                        if ($i == $birthMonth){
+                                            echo " selected ";
+                                        }
+                                        echo ">" .$monthNamesET[$i - 1] ."</option> \n";
+                                    }
+                                    echo "</select> \n";
+                                ?>
+                                <span class="text-danger"><?php echo $birthMonthError; ?></span>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4 mb-2">
+                                <?php
+                                    echo '<select class="custom-select mr-sm-2" name="birthYear">' ."\n";
+                                    echo "\t \t" .'<option value="" selected disabled>aasta</option>' ."\n";
+                                    for ($i = date("Y") - 15; $i >= date("Y") - 110; $i --){
+                                        echo "\t \t" .'<option value="' .$i .'"';
+                                        if ($i == $birthYear){
+                                            echo " selected ";
+                                        }
+                                        echo ">" .$i ."</option> \n";
+                                    }
+                                    echo "</select> \n";
+                                ?>
+                                <span class="text-danger"><?php echo $birthYearError; ?></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" name="email" id="email" class="form-control input-sm" placeholder="Email" value="<?php echo $email; ?>">
+                                <span class="text-danger"><?php echo $emailError; ?></span>
+			    			</div>
+			    			<div class="row">
+			    				<div class="col-xs-6 col-sm-6 col-md-6">
+			    					<div class="form-group">
+                                        <input type="password" name="password" id="password" class="form-control input-sm" placeholder="Parool (min 8 tähemärki)">
+                                        <span class="text-danger"><?php echo $passwordError; ?></span>
+			    					</div>
+			    				</div>
+			    				<div class="col-xs-6 col-sm-6 col-md-6">
+			    					<div class="form-group">
+                                        <input type="password" name="confirmpassword" id="confirmpassword" class="form-control input-sm" placeholder="Kinnita parool">
+                                        <span class="text-danger"><?php echo $confirmpasswordError; ?></span>
+			    					</div>
+			    				</div>
+			    			</div>
+			    			
+			    			<input type="submit" name="submitUserData" value="Registreeri" class="btn btn-primary btn-block">
+                            <span class="text-danger"><?php echo $notice; ?></span>
+			    		</form>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+              <div class="options text-right">
+                
+              </div>
+              <button type="button" class="btn btn-secondary waves-effect ml-auto" data-dismiss="modal">Sulge</button>
+            </div>
+          </div>
+          <!--/.Panel 8-->
+        </div>
+
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<div class="modal fade" id="modalUserInfo" tabindex="-1" role="dialog" aria-labelledby="modalUserInfo" aria-hidden="true">
+  <div class="modal-dialog cascading-modal" role="document">
+    <!--Content-->
+    <div class="modal-content">
+
+      <!--Modal cascading tabs-->
+      <div class="modal-c-tabs">
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs md-tabs tabs-2 light-blue darken-3" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#panel7" role="tab"><i class="fas fa-user mr-1"></i>
+              Kasutaja andmed</a>
+          </li>
+        </ul>
+        <!-- Tab panels -->
+        <div class="tab-content">
+          <!--Panel 7-->
+          <div class="tab-pane fade in show active" id="panel7" role="tabpanel">
+
+            <!--Body-->
+            <div class="modal-body mb-1">
+            <a href="?logout=1" class="btn btn-secondary waves-effect ml-auto">Logi välja</a>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+              <div class="options text-center text-md-right mt-1">
+
               </div>
               <button type="button" class="btn btn-secondary waves-effect ml-auto" data-dismiss="modal">Sulge</button>
             </div>

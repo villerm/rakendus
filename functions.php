@@ -1,4 +1,13 @@
 <?php
+
+require("classes/Session.class.php");
+SessionManager::sessionStart("vr20", 0, "/Kool/Veebirakendus/rakendus/", "localhost");
+//login välja
+if(isset($_GET["logout"])){
+    session_destroy();
+    $_SESSION = [];
+    header("Location: index.php");
+}
 //puhastamise funktsioon
 function test_input($data)
 {
@@ -7,6 +16,7 @@ function test_input($data)
     $data = htmlspecialchars($data);
     return $data;
 }
+
 
 function saveNews($userid, $title, $content)
 {

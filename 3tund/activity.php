@@ -33,7 +33,7 @@ if (empty($activityError) && isset($courseName) && isset($content)) {
 ?>
 <body>
     <div class="container">
-        <a href='.'>Tagasi</a>
+        <?php if(isset($_SESSION["userid"])):?>
         <h2>Sisesta uus logi</h2>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
         <div class="form-group row">
@@ -71,6 +71,9 @@ if (empty($activityError) && isset($courseName) && isset($content)) {
                         echo '<div class="alert alert-'.$alertType.'" role="alert">'.$activityError.'</div>';
                     }; ?>
         </form>
+        <?php else:?>
+        <h5>Logide sisestamiseks peate sisse logima!</h5>
+        <?php endif;?>
         <h2>Logid</h2>
         <table class="table">
             <thead>
