@@ -1,7 +1,8 @@
 <?php
 
-require("classes/Session.class.php");
-require("classes/Test.class.php");
+require("../classes/Session.class.php");
+require("../classes/Test.class.php");
+require("../classes/valmis.class.php");
 SessionManager::sessionStart("vr20", 0, "/Kool/Veebirakendus/rakendus/", "localhost");
 //login välja
 if(isset($_GET["logout"])){
@@ -305,4 +306,50 @@ function signIn($email, $password){
 	$conn->close();
 	return $notice;
 }
-
+function readAllMyPictureThumbs(){
+        $database = "villermaine";
+        $privacy = 3;
+		$finalHTML = "";
+		$html = "";
+		$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUserName"], $GLOBALS["serverPassword"], $database);
+		$stmt = $conn->prepare("SELECT filename, alttext FROM vr20_photos WHERE userid=? AND deleted IS NULL");
+		echo $conn->error;
+		$stmt->bind_param("i", $_SESSION["userid"]);
+		$stmt->bind_result($filenameFromDb, $altFromDb);
+		$stmt->execute();
+		while($stmt->fetch()){
+			$html .= '<a href="' .$GLOBALS["normalPhotoDir"] .$filenameFromDb .'" target="_blank"><img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'"></a>' ."\n \t \t";
+		}
+		if($html != ""){
+			$finalHTML = $html;
+		} else {
+			$finalHTML = "<p>Kahjuks pilte pole!</p>";
+		}
+		
+		$stmt->close();
+		$conn->close();
+		return $finalHTML;
+}
+function readAllSemiPublicPictureThumbs(){
+    $database = "villermaine";
+    $privacy = 2;
+    $finalHTML = "";
+    $html = "";
+    $conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUserName"], $GLOBALS["serverPassword"], $database);
+    $stmt = $conn->prepare("SELECT filename, alttext FROM vr20_photos WHERE privacy<=? AND deleted IS NULL");
+    echo $conn->error;
+    $stmt->bind_param("i", $privacy);
+    $stmt->bind_result($filenameFromDb, $altFromDb);
+    $stmt->execute();
+    while($stmt->fetch()){
+        $html .= '<a href="' .$GLOBALS["normalPhotoDir"] .$filenameFromDb .'" target="_blank"><img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'"></a>' ."\n \t \t";
+    }
+    if($html != ""){
+        $finalHTML = $html;
+    } else {
+        $finalHTML = "<p>Kahjuks pilte pole!</p>";
+    }
+    $stmt->close();
+    $conn->close();
+    return $finalHTML;
+ }

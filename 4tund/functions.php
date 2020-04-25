@@ -1,6 +1,8 @@
 <?php
 
 require("../classes/Session.class.php");
+require("../classes/valmis.class.php");
+require("../classes/Photo.class.php");
 SessionManager::sessionStart("vr20", 0, "/Kool/Veebirakendus/rakendus/", "localhost");
 //login välja
 if(isset($_GET["logout"])){
@@ -304,4 +306,19 @@ function signIn($email, $password){
 	$conn->close();
 	return $notice;
 }
-
+function addPhotoData($userid, $filename, $alttext, $privacy){
+    $database = 'villermaine';
+    $notice = null;
+    $conn = new mysqli($GLOBALS['serverHost'], $GLOBALS['serverUserName'], $GLOBALS['serverPassword'], $database);
+    $stmt = $conn->prepare("INSERT INTO vr20_photos (userid, filename, alttext, privacy) VALUES (?, ?, ?, ?)");
+    echo $conn->error;
+    $stmt->bind_param("issi", $userid, $filename, $alttext, $privacy);
+    if($stmt->execute()){
+		$notice = 1;
+	} else {
+		$notice = $stmt->error;
+    }
+    $stmt->close();
+	$conn->close();
+	return $notice;
+}

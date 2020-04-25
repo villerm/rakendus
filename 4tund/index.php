@@ -1,11 +1,13 @@
 <?php
 	require('header.php');
-
+	
 	if(isset($_SESSION["userid"])):
+
+		//pildi üleslaadimine osa
 	
 	//var_dump($_POST);
 	//var_dump($_FILES);
-	
+	$thumbPhotoDir ="uploadThumbnail/";
 	$originalPhotoDir = "uploadOriginalPhoto/";
 	$normalPhotoDir = "uploadNormalPhoto/";
 	$error = null;
@@ -16,8 +18,9 @@
 	$fileName = null;
 	$maxWidth = 600;
 	$maxHeight = 400;
+	$thumbSize = 100;
 	
-	if(isset($_POST["photoSubmit"])){
+	if(isset($_POST["photoSubmit"]) and !empty($_FILES["fileToUpload"]["tmp_name"])){
 		
 		//kas üldse on pilt?
 		$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
@@ -53,57 +56,66 @@
 		
 		//kui vigu pole
 		if($error == null){
+			
+			$photoUp = new Photo($_FILES["fileToUpload"], $imageFileType);
+			
 			//teen pildi väiksemaks
-			if($imageFileType == "jpg"){
+			/* if($imageFileType == "jpg"){
 				$myTempImage = imagecreatefromjpeg($_FILES["fileToUpload"]["tmp_name"]);
 			}
 			if($imageFileType == "png"){
-				$myTempImage = imagecreatefromjpeg($_FILES["fileToUpload"]["tmp_name"]);
-			}
+				$myTempImage = imagecreatefrompng($_FILES["fileToUpload"]["tmp_name"]);
+			} */
 			
-			$imageW = imagesx($myTempImage);
-			$imageH = imagesy($myTempImage);
+			//$myNewImage = resizePhoto($myTempImage, $maxWidth, $maxHeight);
+			$photoUp->resizePhoto($maxWidth, $maxHeight);
 			
-			if($imageW / $maxWidth > $imageH / $maxHeight){
-				$imageSizeRatio = $imageW / $maxWidth;
+			//lisan vesimärgi
+			$photoUp->addWatermark("vr_watermark.png", 3, 10);
+			
+			//$result = saveImgToFile($photoUp->myNewImage, $normalPhotoDir .$fileName, $imageFileType);
+			$result = $photoUp->saveImgToFile($normalPhotoDir .$fileName);
+			if($result == 1) {
+				$notice = "Vähendatud pilt laeti üles! ";
 			} else {
-				$imageSizeRatio = $imageH / $maxHeight;
+				$error = "Vähendatud pildi salvestamisel tekkis viga!";
 			}
 			
-			$newW = round($imageW / $imageSizeRatio);
-			$newH = round($imageH / $imageSizeRatio);
-			//loome uue ajutise pildiobjekti
-			$myNewImage = imagecreatetruecolor($newW, $newH);
-			imagecopyresampled($myNewImage, $myTempImage, 0, 0, 0, 0, $newW, $newH, $imageW, $imageH);
+			$photoUp->resizePhoto($thumbSize, $thumbSize);
+						
+			//lõpetame vähendatud pildiga ja teeme thumbnail'i
+			/* imageDestroy($myNewImage);
+			$myNewImage = resizePhoto($myTempImage, $thumbSize, $thumbSize); */
+			//$result = saveImgToFile($photoUp->myNewImage, $thumbPhotoDir .$fileName, $imageFileType);
+			$result = $photoUp->saveImgToFile($thumbPhotoDir .$fileName);
+			if($result == 1) {
+				$notice = "Pisipilt laeti üles! ";
+			} else {
+				$error .= " Pisipildi salvestamisel tekkis viga!";
+			}
 			
-			//salvestame vähendatud kujutise faili
-			if($imageFileType == "jpg"){
-				if(imagejpeg($myNewImage, $normalPhotoDir .$fileName, 90)){
-					$notice = "Vähendatud pilt laeti üles! ";
-				} else {
-					$error = "Vähendatud pildi salvestamisel tekkis viga!";
-				}
-			}
-			if($imageFileType == "png"){
-				if(imagepng($myNewImage, $normalPhotoDir .$fileName, 6)){
-					$notice = "Vähendatud pilt laeti üles! ";
-				} else {
-					$error = "Vähendatud pildi salvestamisel tekkis viga!";
-				}
-			}
+			/* imageDestroy($myNewImage);
+			imagedestroy($myTempImage); */
+			unset($photoUp);
 			
 			if(move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $originalTarget)){
-				$notice .= "Originaalpilt laeti üles!";
+				$notice .= "Originaalpilt laeti üles! ";
 			} else {
 				$error .= " Pildi üleslaadimisel tekkis viga!";
 			}
 			
-			imagedestroy($myTempImage);
-			imageDestroy($myNewImage);
+			//kui kõik hästi, salvestame info andmebaasi!!!
+			if($error == null){
+				$result = addPhotoData($_SESSION["userid"], $fileName, $_POST["altText"], $_POST["privacy"]);
+				if($result == 1){
+					$notice .= "Pildi andmed lisati andmebaasi!";
+				} else {
+					$error .= " Pildi andmete lisamisel andmebaasi tekkis tehniline tõrge: " .$result;
+				}
+			}
 			
 		}//kui vigu pole
 	}
-	
 ?>
 <!DOCTYPE html>
 <html lang="et">
