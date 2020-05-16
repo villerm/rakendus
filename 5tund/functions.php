@@ -336,13 +336,13 @@ function readAllSemiPublicPictureThumbs(){
     $finalHTML = "";
     $html = "";
     $conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUserName"], $GLOBALS["serverPassword"], $database);
-    $stmt = $conn->prepare("SELECT filename, alttext FROM vr20_photos WHERE privacy<=? AND deleted IS NULL");
+    $stmt = $conn->prepare("SELECT vr20_photos.filename, vr20_photos.alttext, vr20_users.firstname, vr20_users.lastname FROM vr20_photos, vr20_users WHERE vr20_photos.privacy<=? AND vr20_photos.deleted IS NULL AND vr20_users.id = vr20_photos.userid GROUP BY vr20_photos.id");
     echo $conn->error;
     $stmt->bind_param("i", $privacy);
-    $stmt->bind_result($filenameFromDb, $altFromDb);
+    $stmt->bind_result($filenameFromDb, $altFromDb, $firstnameFromDB, $lastnameFromDB);
     $stmt->execute();
     while($stmt->fetch()){
-        $html .= '<a href="' .$GLOBALS["normalPhotoDir"] .$filenameFromDb .'" target="_blank"><img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'"></a>' ."\n \t \t";
+        $html .= '<div class="col"><a href="' .$GLOBALS["normalPhotoDir"] .$filenameFromDb .'" target="_blank"><img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'"></a> <span class="imgAuthor">'.$firstnameFromDB.' '.$lastnameFromDB."</span></div> \n \t \t";
     }
     if($html != ""){
         $finalHTML = $html;
@@ -353,3 +353,41 @@ function readAllSemiPublicPictureThumbs(){
     $conn->close();
     return $finalHTML;
  }
+ function readgalleryImages($privacy, $page, $limit){
+    $database = "villermaine";
+    $finalHTML = "";
+    $html = "";
+    $conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUserName"], $GLOBALS["serverPassword"], $database);
+    $stmt = $conn->prepare("SELECT vr20_photos.filename, vr20_photos.alttext, vr20_users.firstname, vr20_users.lastname FROM vr20_photos, vr20_users WHERE vr20_photos.privacy<=? AND vr20_photos.deleted IS NULL AND vr20_users.id = vr20_photos.userid GROUP BY vr20_photos.id LIMIT ?,?");
+    echo $conn->error;
+    $stmt->bind_param("iii", $privacy, $page, $limit);
+    $stmt->bind_result($filenameFromDb, $altFromDb, $firstnameFromDB, $lastnameFromDB);
+    $stmt->execute();
+    while($stmt->fetch()){
+        $html .= '<div class="col"><a href="' .$GLOBALS["normalPhotoDir"] .$filenameFromDb .'" target="_blank"><img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'"></a> <span class="imgAuthor">'.$firstnameFromDB.' '.$lastnameFromDB."</span></div> \n \t \t";
+    }
+    if($html != ""){
+        $finalHTML = $html;
+    } else {
+        $finalHTML = "<p>Kahjuks pilte pole!</p>";
+    }
+    $stmt->close();
+    $conn->close();
+    return $finalHTML;
+ }
+ function countPics($privacy){
+    $database = "villermaine";
+    $notice = null;
+    $conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUserName"], $GLOBALS["serverPassword"], $database);
+    $stmt = $conn->prepare("SELECT COUNT(id) FROM vr20_photos WHERE privacy<=? AND deleted IS NULL");
+    echo $conn->error;
+    $stmt->bind_param("i", $privacy);
+    $stmt->bind_result($count);
+    $stmt->execute();
+    $stmt->fetch();
+    $notice = $count;
+    
+    $stmt->close();
+    $conn->close();
+    return $notice;
+}
