@@ -168,6 +168,10 @@
 	<br>
 	<hr>
 </div>
+<?php else:?>
+	<div class="container">
+		<h2>Lehe nägemiseks peate sisse olema logitud!</h2>
+	</div>
 <?php endif;?>
 </body>
 </html>

@@ -19,7 +19,11 @@
 		<?php echo $publicThumbnails; ?>
 	</div>
 </div>
-
+<?php else:?>
+	<div class="container">
+		<h2>Lehe nägemiseks peate sisse olema logitud!</h2>
+	</div>
+<?php endif;?>
 </body>
 </html>
-<?php endif;?>
+
