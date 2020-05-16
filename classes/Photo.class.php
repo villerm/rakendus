@@ -94,6 +94,25 @@
 			imagedestroy($this->myNewImage);
 			return $notice;
 		}
+		public function saveImgToFile($target){
+			$notice = null;
+			if($this->imageFileType == "jpg"){
+				if(imagejpeg($this->myNewImage, $target, 90)){
+					$notice = 1;
+				} else {
+					$notice = 0;
+				}
+			}
+			if($this->imageFileType == "png"){
+				if(imagepng($this->myNewImage, $target, 6)){
+					$notice = 1;
+				} else {
+					$notice = 0;
+				}
+			}
+			imagedestroy($this->myNewImage);
+			return $notice;
+		}
 		
 		public function addWatermark($wmFile, $wmLocation, $fromEdge){
 			$wmFileType = strtolower(pathinfo($wmFile,PATHINFO_EXTENSION));
