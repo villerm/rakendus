@@ -45,22 +45,22 @@ if(isset($_POST["login"])){
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="./2tund">2tund</a>
+        <a class="nav-link" href="../2tund">2tund</a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="./3tund" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="../3tund" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         3tund
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="./3tund">Uudised</a>
-          <a class="dropdown-item" href="./3tund/activity.php">Logid</a>
+          <a class="dropdown-item" href="../3tund">Uudised</a>
+          <a class="dropdown-item" href="../3tund/activity.php">Logid</a>
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="./4tund">4tund</a>
+        <a class="nav-link" href="../4tund">4tund</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="./5tund">5tund</a>
+        <a class="nav-link" href=".">5tund</a>
       </li>
     </ul>
   </div>

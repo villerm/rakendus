@@ -45,7 +45,7 @@ if(isset($_POST["login"])){
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="./2tund">2tund</a>
+        <a class="nav-link" href="../2tund">2tund</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="index.php" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -57,7 +57,10 @@ if(isset($_POST["login"])){
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="./4tund">4tund</a>
+        <a class="nav-link" href="../4tund">4tund</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="../5tund">5tund</a>
       </li>
     </ul>
   </div>

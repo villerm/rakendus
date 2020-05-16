@@ -132,15 +132,36 @@
 	<hr>
 	
     <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
-		<label>Vali pildifail! </label><br>
-		<input type="file" name="fileToUpload"><br>
-		<label>Alt tekst: </label><input type="text" name="altText"><br>
+		<div class="custom-file">
+			<input type="file" class="custom-file-input" id="customFile" name="fileToUpload">
+			<label class="custom-file-label" for="customFile">Vali pildifail!</label>
+		</div>
+		<div class="form-group">
+			<label for="alttext">Alt tekst</label>
+			<input type="text" class="form-control" id="alttext" name="altText" placeholder="Sisesta alt text">
+		</div>
 		<label>Privaatsus</label><br>
-		<label for="priv1">Privaatne</label><input id="priv1" type="radio" name="privacy" value="3" checked><br>
-		<label for="priv2">Sisseloginud kasutajatele</label><input id="priv2" type="radio" name="privacy" value="2"><br>
-		<label for="priv3">Avalik</label><input id="priv3" type="radio" name="privacy" value="1"><br>
-		
-		<input type="submit" name="photoSubmit" value="Lae valitud pilt üles!">
+		<div class="form-check">
+			<input class="form-check-input" type="checkbox" id="priv1" name="privacy" value="3" checked>
+			<label class="form-check-label" for="priv1">
+				Privaatne
+			</label>
+		</div>
+		<div class="form-check">
+			<input class="form-check-input" type="checkbox" id="priv2" name="privacy" value="2">
+			<label class="form-check-label" for="priv2">
+				Sisseloginud kasutajatele
+			</label>
+		</div>
+		<div class="form-check">
+			<input class="form-check-input" type="checkbox" id="priv3" name="privacy" value="1">
+			<label class="form-check-label" for="priv3">
+				Avalik
+			</label>
+		</div>
+		<div class="form-group">
+			<input type="submit" name="photoSubmit" class="btn btn-primary" value="Lae valitud pilt üles!">
+		</div>
 		<span><?php echo $error; echo $notice; ?></span>
 	</form>
 	
