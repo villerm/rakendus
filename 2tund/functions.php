@@ -1,7 +1,7 @@
 <?php
 
 require("../classes/Session.class.php");
-SessionManager::sessionStart("vr20", 0, "/Kool/Veebirakendus/rakendus/", "localhost");
+SessionManager::sessionStart("vr20", 0, "/~viller.maine/", "tigu.hk.tlu.ee");
 //login välja
 if(isset($_GET["logout"])){
     session_destroy();

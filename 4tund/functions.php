@@ -3,7 +3,7 @@
 require("../classes/Session.class.php");
 require("../classes/valmis.class.php");
 require("../classes/Photo.class.php");
-SessionManager::sessionStart("vr20", 0, "/Kool/Veebirakendus/rakendus/", "localhost");
+SessionManager::sessionStart("vr20", 0, "/~viller.maine/", "tigu.hk.tlu.ee");
 //login välja
 if(isset($_GET["logout"])){
     session_destroy();
