@@ -1,9 +1,8 @@
 <?php
 	require('header.php');
-
+	$publicThumbnails =  readAllSemiPublicPictureThumbs();
 	if(isset($_SESSION["userid"])):
 	$privateThumbnails = readAllMyPictureThumbs();
-	$publicThumbnails =  readAllSemiPublicPictureThumbs();
 	$valmis = new valmis;
 ?>
 <div class="container">
