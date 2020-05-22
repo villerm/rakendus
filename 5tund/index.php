@@ -111,7 +111,7 @@ $galleryHTML = readgalleryImages(2, $page, $limit);
 		echo "<span> Järgmine leht</span>";
 	}
 ?>
-	<div class="row">
+	<div class="row" id="gallery">
 	<?php
 		echo $galleryHTML;
 	?>
