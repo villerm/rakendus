@@ -358,13 +358,13 @@ function readAllSemiPublicPictureThumbs(){
     $finalHTML = "";
     $html = "";
     $conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUserName"], $GLOBALS["serverPassword"], $database);
-    $stmt = $conn->prepare("SELECT vr20_photos.filename, vr20_photos.alttext, vr20_users.firstname, vr20_users.lastname FROM vr20_photos, vr20_users WHERE vr20_photos.privacy<=? AND vr20_photos.deleted IS NULL AND vr20_users.id = vr20_photos.userid GROUP BY vr20_photos.id LIMIT ?,?");
+    $stmt = $conn->prepare("SELECT vr20_photos.id, vr20_photos.filename, vr20_photos.alttext, vr20_users.firstname, vr20_users.lastname FROM vr20_photos, vr20_users WHERE vr20_photos.privacy<=? AND vr20_photos.deleted IS NULL AND vr20_users.id = vr20_photos.userid GROUP BY vr20_photos.id LIMIT ?,?");
     echo $conn->error;
     $stmt->bind_param("iii", $privacy, $page, $limit);
-    $stmt->bind_result($filenameFromDb, $altFromDb, $firstnameFromDB, $lastnameFromDB);
+    $stmt->bind_result($idFromDB, $filenameFromDb, $altFromDb, $firstnameFromDB, $lastnameFromDB);
     $stmt->execute();
     while($stmt->fetch()){
-        $html .= '<div class="col"><img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'" data-fn="'.$filenameFromDb.'"> <span class="imgAuthor">'.$firstnameFromDB.' '.$lastnameFromDB."</span></div> \n \t \t";
+        $html .= '<div class="col"><img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'" data-id="'.$idFromDB.'" data-fn="'.$filenameFromDb.'"> <span class="imgAuthor">'.$firstnameFromDB.' '.$lastnameFromDB."</span></div> \n \t \t";
     }
     if($html != ""){
         $finalHTML = $html;
