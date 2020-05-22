@@ -318,7 +318,7 @@ function readAllMyPictureThumbs(){
 		$stmt->bind_result($filenameFromDb, $altFromDb);
 		$stmt->execute();
 		while($stmt->fetch()){
-			$html .= '<img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'" data-fn="'.$filenameFromDb.'">' ."\n \t \t";
+			$html .= '<a href="' .$GLOBALS["normalPhotoDir"] .$filenameFromDb .'" target="_blank"><img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'"></a>' ."\n \t \t";
 		}
 		if($html != ""){
 			$finalHTML = $html;
@@ -342,7 +342,7 @@ function readAllSemiPublicPictureThumbs(){
     $stmt->bind_result($filenameFromDb, $altFromDb, $firstnameFromDB, $lastnameFromDB);
     $stmt->execute();
     while($stmt->fetch()){
-        $html .= '<img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'" data-fn="'.$filenameFromDb.'"><span class="imgAuthor">'.$firstnameFromDB.' '.$lastnameFromDB."</span> \n \t \t";
+        $html .= '<div class="col"><a href="' .$GLOBALS["normalPhotoDir"] .$filenameFromDb .'" target="_blank"><img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'"></a> <span class="imgAuthor">'.$firstnameFromDB.' '.$lastnameFromDB."</span></div> \n \t \t";
     }
     if($html != ""){
         $finalHTML = $html;
@@ -364,7 +364,7 @@ function readAllSemiPublicPictureThumbs(){
     $stmt->bind_result($filenameFromDb, $altFromDb, $firstnameFromDB, $lastnameFromDB);
     $stmt->execute();
     while($stmt->fetch()){
-        $html .= '<img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'" data-fn="'.$filenameFromDb.'"> <span class="imgAuthor">'.$firstnameFromDB.' '.$lastnameFromDB."</span> \n \t \t";
+        $html .= '<div class="col"><img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'" data-fn="'.$filenameFromDb.'"> <span class="imgAuthor">'.$firstnameFromDB.' '.$lastnameFromDB."</span></div> \n \t \t";
     }
     if($html != ""){
         $finalHTML = $html;
