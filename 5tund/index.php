@@ -77,7 +77,7 @@
 	<h1>Minu oma pildid</h1>
 	<p>Tagasi <a href="../">avalehele</a>!</p>
 	<hr>
-    <div>
+    <div id="gallery">
 		<?php echo $privateThumbnails; ?>
 	</div>
 	<hr>
@@ -120,7 +120,7 @@ $galleryHTML = readgalleryImages(2, $page, $limit);
 <?php else:?>
 	<div class="container">
 	<h1>Avalikud pildid</h1>
-	<div class="row">
+	<div class="row" id="gallery">
 		<?php echo $publicThumbnails; ?>
 	</div>
 </div>
