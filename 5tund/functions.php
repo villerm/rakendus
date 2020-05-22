@@ -366,6 +366,7 @@ function readAllSemiPublicPictureThumbs(){
     $stmt->bind_result($idFromDB, $filenameFromDb, $altFromDb, $firstnameFromDB, $lastnameFromDB, $scoreFromDB);
     $stmt->execute();
     while($stmt->fetch()){
+        $scoreFromDB = round($scoreFromDB, 2);
         $html .= '<div class="col"><img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'" data-rating="'.$scoreFromDB.'" data-id="'.$idFromDB.'" data-fn="'.$filenameFromDb.'"> <span class="imgAuthor">'.$firstnameFromDB.' '.$lastnameFromDB."</span><div>Hinne: $scoreFromDB</div></div> \n \t \t";
     }
     if($html != ""){
