@@ -1,7 +1,7 @@
 let modal;
 let modalImg;
 let captionText;
-let photoDir = '../4tund/uploadNormalPhoto';
+let photoDir = '../4tund/uploadNormalPhoto/';
 
 window.onload = function(){
     modal = document.getElementById("modalArea");
