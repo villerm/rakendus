@@ -2,7 +2,8 @@
 	require('header.php');
 	$publicThumbnails =  readAllSemiPublicPictureThumbs();
 	if(isset($_SESSION["userid"])):
-	$privateThumbnails = readAllMyPictureThumbs();
+		$privateThumbnails = readAllMyPictureThumbs();
+	endif;
 	$valmis = new valmis;
 ?>
   <div id="modalArea" class="modalArea">
@@ -74,6 +75,7 @@
 }
 </style>
 <div class="container">
+	<?php if(isset($_SESSION["userid"])):?>
 	<h1>Minu oma pildid</h1>
 	<p>Tagasi <a href="../">avalehele</a>!</p>
 	<hr>
@@ -81,6 +83,7 @@
 		<?php echo $privateThumbnails; ?>
 	</div>
 	<hr>
+	<?php endif;?>
 	<h1>Avalikud pildid</h1>
 	<?php 
 $page = 1; 
@@ -111,21 +114,12 @@ $galleryHTML = readgalleryImages(2, $page, $limit);
 		echo "<span> Järgmine leht</span>";
 	}
 ?>
-	<h1>Gallerii</h1>
 	<div class="row" id="gallery">
 	<?php
 		echo $galleryHTML;
 	?>
 	</div>
 </div>
-<?php else:?>
-	<div class="container">
-	<h1>Avalikud pildid</h1>
-	<div class="row" >
-		<?php echo $publicThumbnails; ?>
-	</div>
-</div>
-<?php endif;?>
 </body>
 </html>
 
