@@ -68,6 +68,9 @@
 	margin-top: 10px;
 }
 
+#gallery img:hover{
+	cursor:zoom-in;
+}
 
 @keyframes zoom {
     from {transform:scale(0); opacity: 0;} 
