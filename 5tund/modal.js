@@ -18,6 +18,10 @@ window.onload = function(){
 }
 
 function openModal(e){
+    document.getElementById("avgRating").innerHTML = "";
+    for (let i = 1; i < 6; i++){
+        document.getElementById("rate" + i).checked = false;
+    }
     modalImg.src = photoDir + e.target.dataset.fn;
     modalImg.alt = e.target.alt;
     photoId = e.target.dataset.id;
