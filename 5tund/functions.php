@@ -358,13 +358,15 @@ function readAllSemiPublicPictureThumbs(){
     $finalHTML = "";
     $html = "";
     $conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUserName"], $GLOBALS["serverPassword"], $database);
-    $stmt = $conn->prepare("SELECT vr20_photos.id, vr20_photos.filename, vr20_photos.alttext, vr20_users.firstname, vr20_users.lastname FROM vr20_photos, vr20_users WHERE vr20_photos.privacy<=? AND vr20_photos.deleted IS NULL AND vr20_users.id = vr20_photos.userid GROUP BY vr20_photos.id LIMIT ?,?");
+    //SELECT vr20_photos.id, vr20_photos.filename, vr20_photos.alttext, vr20_users.firstname, vr20_users.lastname, AVG(vr20_photoratings.rating) as AvgValue FROM vr20_photos JOIN vr20_users ON vr20_photos.userid = vr20_users.id LEFT JOIN vr20_photoratings ON vr20_photoratings.photoid = vr20_photos.id WHERE vr20_photos.privacy <= ? AND deleted IS NULL GROUP BY vr20_photos.id DESC LIMIT ?, ?
+
+    $stmt = $conn->prepare("SELECT vr20_photos.id, vr20_photos.filename, vr20_photos.alttext, vr20_users.firstname, vr20_users.lastname, AVG(vr20_photoratings.rating) as AvgValue FROM vr20_photos JOIN vr20_users ON vr20_photos.userid = vr20_users.id LEFT JOIN vr20_photoratings ON vr20_photoratings.photoid = vr20_photos.id WHERE vr20_photos.privacy <= ? AND deleted IS NULL GROUP BY vr20_photos.id DESC LIMIT ?, ?");
     echo $conn->error;
     $stmt->bind_param("iii", $privacy, $page, $limit);
-    $stmt->bind_result($idFromDB, $filenameFromDb, $altFromDb, $firstnameFromDB, $lastnameFromDB);
+    $stmt->bind_result($idFromDB, $filenameFromDb, $altFromDb, $firstnameFromDB, $lastnameFromDB, $scoreFromDB);
     $stmt->execute();
     while($stmt->fetch()){
-        $html .= '<div class="col"><img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'" data-id="'.$idFromDB.'" data-fn="'.$filenameFromDb.'"> <span class="imgAuthor">'.$firstnameFromDB.' '.$lastnameFromDB."</span></div> \n \t \t";
+        $html .= '<div class="col"><img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'" data-rating="'.$scoreFromDB.'" data-id="'.$idFromDB.'" data-fn="'.$filenameFromDb.'"> <span class="imgAuthor">'.$firstnameFromDB.' '.$lastnameFromDB."</span><div>Hinne: $scoreFromDB</div></div> \n \t \t";
     }
     if($html != ""){
         $finalHTML = $html;
