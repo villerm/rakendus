@@ -1,5 +1,30 @@
 <?php
 require('header.php');
+
+if(isset($_POST["newsSubmit"])){
+    if(isset($_POST["newsTitle"]) and !empty(test_input($_POST["newsTitle"]))){
+        $newsTitle = test_input($_POST["newsTitle"]);
+    } else {
+        $newsError = "Uudise pealkiri on sisestamata! ";
+    }
+    if(isset($_POST["newsContent"]) and !empty(test_input($_POST["newsContent"]))){
+        $newsContent = test_input($_POST["newsContent"]);
+    } else {
+        $newsError .= "Uudise sisu on kirjutamata!";
+    }
+    //echo $newsTitle ."\n";
+    //echo $newsContent;
+    //saadame andmebaasi
+    if(empty($newsError)){
+        //echo "Salvestame!";
+        $response = saveNews($_SESSION["userid"], $newsTitle, $newsContent);
+        if($response == 1){
+            $newsError = "Uudis on salvestatud!";
+        } else {
+            $newsError = "Uudise salvestamisel tekkis tõrge!";
+        }
+    }
+}
 ?>
 <body>
     <?php if(isset($_SESSION["userid"])):?>

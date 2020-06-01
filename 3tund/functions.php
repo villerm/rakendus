@@ -20,9 +20,10 @@ function test_input($data)
 
 function saveNews($userid, $title, $content)
 {
+    $database = 'villermaine';
     $response = null;
     //andmebaasi yhendus
-    $conn = new mysqli($GLOBALS['serverHost'], $GLOBALS['serverUserName'], $GLOBALS['serverPassword'], $GLOBALS['database']);
+    $conn = new mysqli($GLOBALS['serverHost'], $GLOBALS['serverUserName'], $GLOBALS['serverPassword'], $database);
     //sql paring
     $stmt = $conn->prepare('INSERT INTO vr_news (userid, title, content) VALUES (?, ?, ?)');
     echo $conn->error;
